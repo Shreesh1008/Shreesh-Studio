@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shreesh Studio - Bright Neon Typography & Emoji Playground</title>
+  <meta name="description" content="Type anything in vibrant bright colors, animated neon effects, diverse Google font styles, and expressive emojis. Download high-res PNG cards or trigger emoji rain!">
+  
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Curated High-Impact Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Bungee+Shade&family=Caveat:wght@700&family=Cinzel+Decorative:wght@700&family=Dancing+Script:wght@700&family=Fredoka:wght@600;700&family=Inter:wght@400;600;800&family=Luckiest+Guy&family=Monoton&family=Montserrat:wght@800;900&family=Orbitron:wght@700;900&family=Pacifico&family=Permanent+Marker&family=Playfair+Display:ital,wght@1,700;1,900&family=Press+Start+2P&family=Righteous&family=Rubik+Glitch&family=Russo+One&family=Syne:wght@800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-cyber-dark">
+
+  <!-- Ambient Dynamic Glow Orbs in Background -->
+  <div class="ambient-glow orb-1" aria-hidden="true"></div>
+  <div class="ambient-glow orb-2" aria-hidden="true"></div>
+  <div class="ambient-glow orb-3" aria-hidden="true"></div>
+
+  <!-- Particle / Rain Container -->
+  <div id="particleCanvas" class="particles-layer" aria-hidden="true"></div>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="brand">
+      <div class="logo-icon">
+        <span class="logo-sparkle">✦</span>
+        <span class="logo-text-c">S</span>
+      </div>
+      <div class="brand-text">
+        <h1 class="brand-title">SHREESH<span class="badge-studio">STUDIO</span></h1>
+        <p class="brand-subtitle">Bright Neon Typography &amp; Emoji Playground</p>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="header-actions">
+      <button id="btnSurprise" class="action-btn pill-btn" title="Surprise me with random styles!">
+        <span class="btn-icon">🎲</span>
+        <span class="btn-text">Surprise Me</span>
+      </button>
+
+      <button id="btnEmojiRain" class="action-btn pill-btn party-btn" title="Make it rain emojis!">
+        <span class="btn-icon">🌧️</span>
+        <span class="btn-text">Emoji Rain</span>
+      </button>
+
+      <button id="btnSoundToggle" class="action-btn icon-btn" title="Toggle typing sound effects" aria-label="Toggle sound">
+        <span id="soundIcon">🔊</span>
+      </button>
+
+      <button id="btnFullscreen" class="action-btn icon-btn" title="Fullscreen Presentation Mode" aria-label="Fullscreen">
+        <span>⛶</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main App Layout -->
+  <main class="studio-container">
+    
+    <!-- LEFT: Live Interactive Stage -->
+    <section class="stage-section" aria-label="Live Stage Preview">
+      
+      <!-- Stage Bar / Ratio & Ambiance Selector -->
+      <div class="stage-bar">
+        <div class="stage-badges">
+          <span class="status-indicator"></span>
+          <span class="stage-mode-tag" id="stageModeTag">Prismatic Glow</span>
+        </div>
+
+        <div class="stage-controls">
+          <!-- Background Ambiance -->
+          <div class="control-pill-group">
+            <span class="pill-label">Backdrop:</span>
+            <button class="pill-option active" data-bg="theme-cyber-dark" title="Cyber Abyss">Abyss</button>
+            <button class="pill-option" data-bg="theme-synthwave" title="Synthwave Neon">Synth</button>
+            <button class="pill-option" data-bg="theme-cosmic" title="Cosmic Nebula">Cosmic</button>
+            <button class="pill-option" data-bg="theme-acid" title="Acid Grid">Acid</button>
+            <button class="pill-option" data-bg="theme-glass" title="Smoky Glass">Glass</button>
+          </div>
+
+          <!-- Canvas Aspect Ratio -->
+          <div class="control-pill-group">
+            <span class="pill-label">Ratio:</span>
+            <button class="ratio-btn active" data-ratio="auto" title="Flexible Dynamic Fit">Auto</button>
+            <button class="ratio-btn" data-ratio="square" title="Square 1:1">1:1</button>
+            <button class="ratio-btn" data-ratio="portrait" title="Story 4:5">4:5</button>
+            <button class="ratio-btn" data-ratio="landscape" title="Banner 16:9">16:9</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage Card Canvas Container -->
+      <div class="stage-wrapper" id="stageWrapper">
+        <div class="stage-card" id="stageCard">
+          
+          <!-- Inner glowing grid or subtle decorative lines -->
+          <div class="card-grid-overlay" aria-hidden="true"></div>
+          
+          <!-- Floating Ambient Corner Accents -->
+          <div class="card-accent top-left" aria-hidden="true"></div>
+          <div class="card-accent top-right" aria-hidden="true"></div>
+          <div class="card-accent bottom-left" aria-hidden="true"></div>
+          <div class="card-accent bottom-right" aria-hidden="true"></div>
+
+          <!-- The Live Glowing Text & Emoji Canvas -->
+          <div class="stage-display-wrapper">
+            <div id="stageDisplay" class="stage-display anim-wave font-fredoka color-rainbow" contenteditable="false" role="region" aria-live="polite">
+              <!-- Dynamically populated letters/words/emojis -->
+            </div>
+          </div>
+
+          <!-- Watermark / Footer Badge on Stage -->
+          <div class="stage-card-footer">
+            <span class="watermark-tag">✨ Shreesh Studio</span>
+            <span class="char-badge" id="cardCharCounter">0 chars</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Emoji Bar right beneath the stage -->
+      <div class="quick-emoji-bar" aria-label="Quick Emoji Bar">
+        <span class="quick-emoji-label">✨ Quick Emojis:</span>
+        <div class="quick-emojis-scroll" id="quickEmojisList">
+          <!-- Dynamically populated quick emojis -->
+        </div>
+        <button id="btnOpenEmojiModal" class="btn-more-emojis" title="Open full emoji drawer">
+          <span>More Emojis 🎁</span>
+        </button>
+      </div>
+
+      <!-- Bottom Stage Action Buttons -->
+      <div class="stage-action-bar">
+        <button id="btnDownloadCard" class="btn-primary-action glow-action" title="Download as High-Definition Image">
+          <span class="action-icon">📸</span>
+          <span class="action-text">Download PNG Card</span>
+        </button>
+
+        <button id="btnCopyText" class="btn-secondary-action" title="Copy text & emojis to clipboard">
+          <span class="action-icon">📋</span>
+          <span class="action-text">Copy Text</span>
+        </button>
+
+        <button id="btnClearStage" class="btn-tertiary-action" title="Clear text">
+          <span class="action-icon">🗑️</span>
+          <span class="action-text">Clear</span>
+        </button>
+      </div>
+    </section>
+
+
+    <!-- RIGHT: Studio Customizer & Controls Panel -->
+    <aside class="controls-panel" aria-label="Studio Controls">
+      
+      <!-- Panel Navigation Tabs -->
+      <nav class="panel-tabs" role="tablist">
+        <button class="panel-tab active" data-tab="tab-text" role="tab" aria-selected="true">
+          <span class="tab-icon">✍️</span> Text &amp; Fonts
+        </button>
+        <button class="panel-tab" data-tab="tab-colors" role="tab" aria-selected="false">
+          <span class="tab-icon">🎨</span> Bright Colors
+        </button>
+        <button class="panel-tab" data-tab="tab-effects" role="tab" aria-selected="false">
+          <span class="tab-icon">⚡</span> Effects &amp; Glow
+        </button>
+        <button class="panel-tab" data-tab="tab-emojis" role="tab" aria-selected="false">
+          <span class="tab-icon">🥳</span> Emojis
+        </button>
+      </nav>
+
+      <div class="tab-content-container">
+
+        <!-- TAB 1: TEXT & FONTS -->
+        <div id="tab-text" class="tab-pane active" role="tabpanel">
+          
+          <!-- Text Input Section -->
+          <div class="control-group">
+            <div class="group-header">
+              <label for="textInput" class="group-title">Type Your Message</label>
+              <div class="prompt-chips">
+                <button class="chip-preset" data-preset="NEON DREAMS NEVER DIE ✨🚀">✨ Neon Dreams</button>
+                <button class="chip-preset" data-preset="STAY BRIGHT & WILD 🦄💖⚡">🦄 Stay Bright</button>
+                <button class="chip-preset" data-preset="RETRO VIBES ONLY 🕹️👾🍕">🕹️ Retro Vibes</button>
+                <button class="chip-preset" data-preset="VIVA LA FIESTA 🎉🔥🌮">🎉 Fiesta</button>
+              </div>
+            </div>
+
+            <div class="input-wrapper">
+              <textarea id="textInput" class="studio-textarea" rows="4" placeholder="Type anything here... Watch it glow with bright colors & switch fonts!"></textarea>
+              <div class="textarea-footer">
+                <span id="typingStatus" class="typing-status">Ready to glow ✨</span>
+                <span id="charCounter" class="char-counter">0 chars</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Multi-Font / Dynamic Font Mode Toggle -->
+          <div class="control-group">
+            <div class="toggle-card">
+              <div class="toggle-info">
+                <span class="toggle-title">🔀 Multi-Font Rainbow Mode</span>
+                <span class="toggle-sub">Randomizes different font styles across every word or letter!</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="toggleMultiFont">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Curated Font Styles Grid -->
+          <div class="control-group">
+            <div class="group-header">
+              <span class="group-title">Choose Font Style</span>
+              <span class="group-count">18 Styles</span>
+            </div>
+
+            <div class="font-grid" id="fontGrid">
+              <!-- Dynamically generated font cards -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- TAB 2: BRIGHT COLORS -->
+        <div id="tab-colors" class="tab-pane" role="tabpanel">
+          
+          <!-- Color Schemes -->
+          <div class="control-group">
+            <div class="group-header">
+              <span class="group-title">Bright Color Palettes</span>
+              <span class="group-hint">Select a vibrant color vibe</span>
+            </div>
+
+            <div class="color-palette-grid" id="paletteGrid">
+              <!-- Dynamically populated color palettes -->
+            </div>
+          </div>
+
+          <!-- Text Color Mode -->
+          <div class="control-group">
+            <span class="group-title">Rainbow Application</span>
+            <div class="mode-options-grid">
+              <label class="mode-radio">
+                <input type="radio" name="colorDist" value="letter" checked>
+                <span class="radio-box">
+                  <span class="radio-icon">🌈</span>
+                  <span class="radio-name">Per-Letter Rainbow</span>
+                  <span class="radio-desc">Alternating colors for every letter</span>
+                </span>
+              </label>
+
+              <label class="mode-radio">
+                <input type="radio" name="colorDist" value="word">
+                <span class="radio-box">
+                  <span class="radio-icon">💬</span>
+                  <span class="radio-name">Per-Word Pop</span>
+                  <span class="radio-desc">Different bright hue for each word</span>
+                </span>
+              </label>
+
+              <label class="mode-radio">
+                <input type="radio" name="colorDist" value="gradient">
+                <span class="radio-box">
+                  <span class="radio-icon">✨</span>
+                  <span class="radio-name">Shimmer Gradient</span>
+                  <span class="radio-desc">Flowing neon spectrum blend</span>
+                </span>
+              </label>
+
+              <label class="mode-radio">
+                <input type="radio" name="colorDist" value="solid">
+                <span class="radio-box">
+                  <span class="radio-icon">💡</span>
+                  <span class="radio-name">Unified Bright</span>
+                  <span class="radio-desc">Single high-intensity neon color</span>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Custom Neon Color Picker -->
+          <div class="control-group">
+            <span class="group-title">Custom Neon Accent Colors</span>
+            <div class="custom-color-row">
+              <div class="color-picker-unit">
+                <label for="customColor1">Primary Glow:</label>
+                <input type="color" id="customColor1" value="#00f0ff" class="native-color-picker">
+              </div>
+              <div class="color-picker-unit">
+                <label for="customColor2">Secondary Glow:</label>
+                <input type="color" id="customColor2" value="#ff007f" class="native-color-picker">
+              </div>
+              <div class="color-picker-unit">
+                <label for="customColor3">Tertiary Glow:</label>
+                <input type="color" id="customColor3" value="#ffe600" class="native-color-picker">
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- TAB 3: EFFECTS & GLOW -->
+        <div id="tab-effects" class="tab-pane" role="tabpanel">
+          
+          <!-- Animation Effects -->
+          <div class="control-group">
+            <span class="group-title">Text Dynamics &amp; Motion</span>
+            <div class="anim-grid" id="animGrid">
+              <button class="anim-card active" data-anim="anim-wave">
+                <span class="anim-icon">🌊</span>
+                <span class="anim-name">Floating Wave</span>
+              </button>
+              <button class="anim-card" data-anim="anim-pulse">
+                <span class="anim-icon">💓</span>
+                <span class="anim-name">Neon Pulse</span>
+              </button>
+              <button class="anim-card" data-anim="anim-shimmer">
+                <span class="anim-icon">🌈</span>
+                <span class="anim-name">Color Shimmer</span>
+              </button>
+              <button class="anim-card" data-anim="anim-glitch">
+                <span class="anim-icon">⚡</span>
+                <span class="anim-name">Cyber Glitch</span>
+              </button>
+              <button class="anim-card" data-anim="anim-bounce">
+                <span class="anim-icon">🤾</span>
+                <span class="anim-name">Jiggle Bounce</span>
+              </button>
+              <button class="anim-card" data-anim="anim-none">
+                <span class="anim-icon">⏸️</span>
+                <span class="anim-name">Static Glow</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Glow Intensity Slider -->
+          <div class="control-group">
+            <div class="slider-header">
+              <span class="group-title">Neon Glow Intensity</span>
+              <span id="glowVal" class="slider-value">80%</span>
+            </div>
+            <input type="range" id="glowSlider" min="0" max="100" value="80" class="studio-range">
+          </div>
+
+          <!-- Font Size Slider -->
+          <div class="control-group">
+            <div class="slider-header">
+              <span class="group-title">Text Size</span>
+              <span id="fontSizeVal" class="slider-value">56px</span>
+            </div>
+            <input type="range" id="fontSizeSlider" min="24" max="96" value="56" class="studio-range">
+          </div>
+
+          <!-- Letter Spacing Slider -->
+          <div class="control-group">
+            <div class="slider-header">
+              <span class="group-title">Letter Spacing</span>
+              <span id="spacingVal" class="slider-value">2px</span>
+            </div>
+            <input type="range" id="spacingSlider" min="-4" max="20" value="2" class="studio-range">
+          </div>
+
+          <!-- 3D Pop Shadow Toggle -->
+          <div class="control-group">
+            <div class="toggle-card">
+              <div class="toggle-info">
+                <span class="toggle-title">📐 3D Extruded Shadow</span>
+                <span class="toggle-sub">Creates layered isometric depth beneath each glowing letter</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="toggle3D" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Text Outline / Stroke Toggle -->
+          <div class="control-group">
+            <div class="toggle-card">
+              <div class="toggle-info">
+                <span class="toggle-title">✏️ Dark Contrast Outline</span>
+                <span class="toggle-sub">Adds crisp dark stroke for ultra-high legibility</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="toggleStroke" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- TAB 4: EMOJIS -->
+        <div id="tab-emojis" class="tab-pane" role="tabpanel">
+          
+          <div class="control-group">
+            <div class="group-header">
+              <span class="group-title">Emoji Size &amp; Behavior</span>
+            </div>
+            <div class="slider-header">
+              <span class="slider-label">Emoji Scale:</span>
+              <span id="emojiScaleVal" class="slider-value">1.1x</span>
+            </div>
+            <input type="range" id="emojiScaleSlider" min="0.8" max="2.0" step="0.1" value="1.1" class="studio-range">
+          </div>
+
+          <div class="control-group">
+            <div class="toggle-card">
+              <div class="toggle-info">
+                <span class="toggle-title">✨ Floating Animated Emojis</span>
+                <span class="toggle-sub">Gives emojis subtle floating and spinning micro-animations</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="toggleEmojiAnim" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <div class="toggle-card">
+              <div class="toggle-info">
+                <span class="toggle-title">💥 Typing Sparkles &amp; Bursts</span>
+                <span class="toggle-sub">Spawns mini glowing particles whenever you type</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="toggleTypingParticles" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <button id="btnOpenFullVault" class="btn-vault-open">
+              <span>🎁 Open Full Emoji Vault (200+ Emojis)</span>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </aside>
+
+  </main>
+
+  <!-- FULL EMOJI VAULT MODAL / DRAWER -->
+  <div id="emojiModal" class="modal-backdrop" aria-hidden="true" role="dialog" aria-labelledby="emojiModalTitle">
+    <div class="modal-window">
+      
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <h2 id="emojiModalTitle" class="modal-title">✨ Emoji Vault</h2>
+          <span class="modal-sub">Click any emoji to insert directly into your text!</span>
+        </div>
+        <button id="btnCloseEmojiModal" class="modal-close-btn" aria-label="Close emoji modal">✕</button>
+      </div>
+
+      <!-- Emoji Search Bar -->
+      <div class="emoji-search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="emojiSearchInput" placeholder="Search emojis (e.g., party, heart, fire, star, cat)...">
+        <button id="btnClearSearch" class="search-clear-btn" style="display:none;">✕</button>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="emoji-categories" id="emojiCategoryTabs" role="tablist">
+        <button class="cat-pill active" data-category="all">🌟 All</button>
+        <button class="cat-pill" data-category="smileys">😊 Faces &amp; Vibes</button>
+        <button class="cat-pill" data-category="magic">🔥 Magic &amp; Fire</button>
+        <button class="cat-pill" data-category="animals">🦄 Animals &amp; Nature</button>
+        <button class="cat-pill" data-category="food">🍕 Food &amp; Treats</button>
+        <button class="cat-pill" data-category="party">🎉 Party &amp; Fun</button>
+        <button class="cat-pill" data-category="symbols">💖 Hearts &amp; Stars</button>
+      </div>
+
+      <!-- Scrollable Emoji Grid -->
+      <div class="modal-emoji-grid" id="modalEmojiGrid">
+        <!-- Dynamically rendered emojis -->
+      </div>
+
+      <div class="modal-footer">
+        <span class="emoji-count-label" id="emojiFoundCount">Loading emojis...</span>
+        <button id="btnDoneEmoji" class="btn-primary-action small-btn">Done</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- Offscreen canvas for rendering high-res PNG export -->
+  <canvas id="exportCanvas" style="display:none;"></canvas>
+
+  <script src="app.js"></script>
+</body>
+</html>
